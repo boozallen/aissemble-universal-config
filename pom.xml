@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.boozallen.aissemble</groupId>
+        <artifactId>aissemble-parent</artifactId>
+        <version>6</version>
+        <relativePath />
+    </parent>
+
+    <artifactId>aissemble-universal-config</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>aiSSEMBLE::Universal Config</name>
+    <description>aiSSEMBLE universal configuration</description>
+    <packaging>pom</packaging>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ghcr.io</id>
+            <url>https://maven.pkg.github.com/boozallen/aissemble-universal-configuration</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <modules>
+        <module>aissemble-universal-config-loader</module>
+    </modules>
+
+    <properties>
+        <version.habushu.plugin>3.1.1</version.habushu.plugin>
+        <version.python>3.11.4</version.python>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.technologybrewery.habushu</groupId>
+                    <artifactId>habushu-maven-plugin</artifactId>
+                    <version>${version.habushu.plugin}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <pythonVersion>${version.python}</pythonVersion>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- Apply licenses automatically -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
