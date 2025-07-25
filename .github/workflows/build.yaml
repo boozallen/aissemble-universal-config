@@ -1,0 +1,63 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+name: Build aissemble-universal-config
+
+on:
+  push:
+    branches: [ "dev" ]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build'
+        required: true
+        default: 'dev'
+        type: string
+  schedule:
+  - cron: "0 6 * * *" # every day at 6am UTC
+
+jobs:
+  build:
+    if: github.event.review.state == 'approved' || github.ref == 'refs/heads/dev' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.4'
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Generate the settings.xml for ghcr.io and dev-pypi server profiles
+      - name: Create settings.xml
+        id: create-settings-xml
+        run: |
+          cat > $HOME/.m2/settings.xml << EOF
+          <settings>
+            <servers>
+              <server>
+                <id>dev-pypi</id>
+                <username>${{ secrets.TEST_PYPI_USERNAME }}</username>
+                <password>${{ secrets.TEST_PYPI_TOKEN }}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      # Run build and deploy test artifacts
+      - name: Build aissemble-universal-config
+        run: mvn clean deploy -B -U -Pci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
