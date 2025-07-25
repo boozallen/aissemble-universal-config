@@ -5,13 +5,13 @@ name: Build aissemble-universal-config
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "4-create-release-job" ]
   workflow_dispatch:
     inputs:
       branch:
         description: 'Branch to build'
         required: true
-        default: 'dev'
+        default: '4-create-release-job'
         type: string
   schedule:
   - cron: "0 6 * * *" # every day at 6am UTC
