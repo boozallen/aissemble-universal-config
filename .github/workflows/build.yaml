@@ -48,6 +48,12 @@ jobs:
           <settings>
             <servers>
               <server>
+                <id>ghcr.io</id>
+                <username>\${env.GITHUB_ACTOR}</username>
+                <password>\${env.GITHUB_TOKEN}</password>
+              </server>
+          
+              <server>
                 <id>dev-pypi</id>
                 <username>${{ secrets.TEST_PYPI_USERNAME }}</username>
                 <password>${{ secrets.TEST_PYPI_TOKEN }}</password>
