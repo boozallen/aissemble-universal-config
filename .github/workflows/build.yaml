@@ -49,8 +49,8 @@ jobs:
             <servers>
               <server>
                 <id>ghcr.io</id>
-                <username>\${env.GITHUB_ACTOR}</username>
-                <password>\${env.GITHUB_TOKEN}</password>
+                <username>${{env.GITHUB_ACTOR}}</username>
+                <password>${{env.GITHUB_TOKEN}}</password>
               </server>
           
               <server>
