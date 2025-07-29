@@ -7,23 +7,54 @@
     <parent>
         <groupId>com.boozallen.aissemble</groupId>
         <artifactId>aissemble-parent</artifactId>
-        <version>6</version>
+        <version>7</version>
         <relativePath />
     </parent>
 
     <artifactId>aissemble-universal-config</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <name>aiSSEMBLE::Universal Config</name>
     <description>aiSSEMBLE universal configuration</description>
     <packaging>pom</packaging>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ghcr.io</id>
-            <url>https://maven.pkg.github.com/boozallen/aissemble-universal-configuration</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <url>https://github.com/boozallen/aissemble-universal-config</url>
+    <inceptionYear>2024</inceptionYear>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/boozallen/aissemble-universal-config/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:ssh://git@github.com/boozallen/aissemble-universal-config.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/boozallen/aissemble-universal-config.git</developerConnection>
+        <url>https://github.com/boozallen/aissemble-universal-config</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <organization>
+        <name>Booz Allen Hamilton Inc.</name>
+        <url>https://www.boozallen.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>aissemble</id>
+            <name>aiSSEMBLE Baseline Community</name>
+            <organization>Booz Allen Hamilton</organization>
+            <organizationUrl>https://boozallen.com</organizationUrl>
+            <email>aissemble@bah.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Booz Allen Public License v1.0</name>
+            <url>https://github.com/boozallen/Public-License/blob/master/LICENSE.md</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <modules>
         <module>aissemble-universal-config-loader</module>
