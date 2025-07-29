@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>aissemble-universal-config</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
 
     <name>aiSSEMBLE::Universal Config</name>
     <description>aiSSEMBLE universal configuration</description>
@@ -32,7 +32,16 @@
     <properties>
         <version.habushu.plugin>3.1.1</version.habushu.plugin>
         <version.python>3.11.4</version.python>
+        <version.maven.release.plugin>3.1.1</version.maven.release.plugin>
     </properties>
+
+    <scm>
+        <connection>scm:git:ssh://git@github.com/boozallen/aissemble-universal-config.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/boozallen/aissemble-universal-config.git
+        </developerConnection>
+        <url>https://github.com/boozallen/aissemble-universal-config/</url>
+        <tag>aissemble-universal-config-0.1.0</tag>
+    </scm>
 
     <build>
         <pluginManagement>
@@ -46,6 +55,25 @@
                         <pythonVersion>${version.python}</pythonVersion>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${version.maven.release.plugin}</version>
+                    <configuration>
+                        <releaseProfiles>central-release</releaseProfiles>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.7.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <publishingServerId>central</publishingServerId>
+                        <autoPublish>true</autoPublish>
+                        <waitUntil>uploaded</waitUntil>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -55,13 +83,32 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <!-- During release preparation, Habushu will automatically update the versions of Habushu modules
+                        within their pyproject.toml configurations, however the maven-release-plugin will only commit
+                        updates to pom.xml files.  In order to version control both pom.xml and pyproject.toml files
+                        that are updated during release preparation, customize the preparation and completion goals
+                        to additionally execute the scm:checkin goals -->
+                    <preparationGoals>clean verify scm:checkin -Dmessage="[maven-release-plugin] prepare release"
+                    </preparationGoals>
+                    <completionGoals>clean verify scm:checkin -Dmessage="[maven-release-plugin] prepare for next
+                        development iteration"
+                    </completionGoals>
+                    <goals>deploy</goals>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 
     <profiles>
         <profile>
             <id>ci</id>
+            <properties>
+                <maven.build.cache.enabled>false</maven.build.cache.enabled>
+            </properties>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -81,6 +128,30 @@
                         </plugin>
                     </plugins>
                 </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>central-release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>
