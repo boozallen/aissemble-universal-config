@@ -16,6 +16,13 @@
     <description>aiSSEMBLE universal configuration</description>
     <packaging>pom</packaging>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ghcr.io</id>
+            <url>https://maven.pkg.github.com/boozallen/aissemble-universal-config</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <url>https://github.com/boozallen/aissemble-universal-config</url>
     <inceptionYear>2024</inceptionYear>
 
@@ -86,4 +93,33 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <properties>
+                <maven.build.cache.enabled>false</maven.build.cache.enabled>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.technologybrewery.habushu</groupId>
+                            <artifactId>habushu-maven-plugin</artifactId>
+                            <version>${version.habushu.plugin}</version>
+                            <configuration>
+                                <usePyenv>false</usePyenv>
+                                <deleteVirtualEnv>true</deleteVirtualEnv>
+                                <forceSync>true</forceSync>
+                                <decryptPassword>false</decryptPassword>
+                                <rewriteLocalPathDepsInArchives>true</rewriteLocalPathDepsInArchives>
+                                <addPypiRepoAsPackageSources>false</addPypiRepoAsPackageSources>
+                                <useDevRepository>true</useDevRepository>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
