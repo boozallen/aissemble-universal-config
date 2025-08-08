@@ -1,4 +1,11 @@
 import os
+import sys
+import shutil
+
+folder_path = os.path.join(os.path.dirname(__file__), "steps")
+folder_path = os.path.abspath(folder_path)
+sys.path.append(folder_path)
+from config_loader_steps import RELATIVE_FILE_PATH
 
 
 def before_all(context):
@@ -14,3 +21,6 @@ def after_scenario(context, scenario):
         key = x.replace("-", "_")
         if hasattr(context, "globals") and key in context.globals:
             del context.globals[key]
+
+    if os.path.exists(RELATIVE_FILE_PATH) and os.path.isdir(RELATIVE_FILE_PATH):
+        shutil.rmtree(RELATIVE_FILE_PATH)

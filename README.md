@@ -34,6 +34,33 @@ To help move projects from Jupyter Notebook experimentation to the next stage of
 can extract configurations from a Notebook cell into a configuration properties file.  The extraction function exports
 all `str` or `int` constants in a cell.
 
+#### Using Regular Python
+```python
+# install the aissemble-universal-config-loader module 
+!pip install aissemble-universal-config-loader
+
+from aissemble_universal_config_loader.exporter.properties_exporter import (
+    PropertyExporter,
+)
+
+# constants used for configuration
+MODEL_BUCKET="s3a://ml-project/models"
+BATCH_SIZE=100
+INPUT_LIST=[1, 2, 3]  # the list variable will not be extracted to property file
+METADATA={"a":"b", "c":"d"} # the dict variable will not be extract to property file
+
+
+# Create a PropertyExporter and inject the session context (local and global)
+property_exporter = PropertyExporter(locals(), globals())
+
+# extract the `int`/`string` type variables to the default configuration file
+property_exporter.extract_vars_to_property_file()
+
+# OR - extract to a custom file/location
+property_exporter.extract_vars_to_property_file("my-custom.properties", "../my/custom/folder")
+```
+
+#### Using Notebook Extensions
 ```python
 # constants used for configuration
 MODEL_BUCKET="s3a://ml-project/models"
@@ -49,7 +76,7 @@ METADATA={"a":"b", "c":"d"} # the dict variable will not be extract to property 
 # extract the `int`/`string` type global variables to the default configuration file
 %extract_vars_to_property_file
 
-# extact to a custom file/location
+# extract to a custom file/location
 %extract_vars_to_property_file my-custom.properties ../my/custom/folder
 ```
 
