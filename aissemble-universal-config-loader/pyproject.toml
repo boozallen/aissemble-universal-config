@@ -1,6 +1,6 @@
 [project]
 name = "aissemble-universal-config-loader"
-version = "0.1.0.dev"
+version = "0.1.1.dev"
 description = "aiSSEMBLE Universal Config Loader"
 authors = [{name = "aiSSEMBLE Baseline Community", email = "aissemble@bah.com"}]
 
